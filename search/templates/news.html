@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" />
+    <script src="../static/js/jquery-2.1.1.min.js"></script>
+    <script src="../static/js/jquery-ui.min.js"></script>
+    <style>
+        body {
+            padding-left: 14px;
+            padding-top: 14px;
+        }
+        ul,li {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding-bottom: 16px;
+        }
+        a,a:link,a:visited,a:hover,a:active {
+            text-decoration: none;
+        }
+        .highLight {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input class="form-control" style="display: inline; width: 50%;" id="news-tips">
+        <button onclick="beginSearch()" class="btn btn-primary">搜索一下</button>
+    </div>
+    <hr>
+    <div>
+        <ul id="queryResult">
+            <li>
+                <h4><a href="https://news.sina.com.cn/o/2019-12-01/doc-iihnzahi4524832.shtml" target="_blank">今年公布被查的中管干部已达20人(名单)</a></h4>
+                <p>
+                    5月19日，中华全国供销合作总社党组副书记、理事会主任<span class='highLight'>刘</span><span class='highLight'>士</span><span class='highLight'>余</span>同志配合中央纪委国家监委审查调查。6月11日，内蒙古自治区党委常委、呼和浩特市委书记云光中接受中央纪委国家监委纪律审查和监察调查。
+                </p>
+            </li>
+            <li>
+                <h4><a href="https://news.sina.com.cn/o/2019-12-01/doc-iihnzahi4524832.shtml">2019金翼奖榜单出炉 网易教育打造\"聚力教育·智变未来\"年度盛会</a></h4>
+                <p>
+                    本届盛典立足国内，放眼国际，聚焦教育行业热点领域，邀请到教育部及相关部门领导、教育协会机构、业界知名人士、权威专家学者、行业领袖精英、优秀教育工作者、演艺明星等300<span class='highLight'>余</span>名关心教育的社会各界人士共同参与。
+                </p>
+            </li>
+        </ul>
+    </div>
+<div id="content"></div>
+</body>
+<script>
+    $('#news-tips').autocomplete({
+        source: 'news/tips',
+        delay:100,
+        minLength:1
+    })
+    function beginSearch() {
+        var searchText = $('#news-tips').val();
+        if (searchText.trim()){
+            $.get('news/search?text='+searchText.trim(),{}, function (_data) {
+                renderSearchResult(_data)
+            },'json')
+        }
+    }
+    function renderSearchResult(_data) {
+        var ul = document.getElementById('queryResult');
+        ul.innerHTML = '';
+        for (var i=0; i< _data.length; i++){
+            var stringResult = _data[i];
+            var url = stringResult.url;
+            var title = stringResult.title;
+            var content = stringResult.content;
+            var li = document.createElement('li');
+            var h4 = document.createElement('h4');
+            var a = document.createElement('a');
+            var p = document.createElement('p');
+            a.innerHTML = title;
+            p.innerHTML = content;
+            console.log(p)
+            a.setAttribute('href', url);
+            a.setAttribute('target','_blank');
+            ul.appendChild(li);
+            li.appendChild(h4);
+            h4.appendChild(a);
+            li.appendChild(p);
+        }
+    }
+</script>
+</html>

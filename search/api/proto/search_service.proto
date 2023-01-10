@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package search.service.v1;
+
+option go_package = "project-search/pkg/service/search.service.v1";
+
+message StarMessage{
+   string term = 1;
+}
+
+message StarResponse{
+  repeated string stars = 1;
+}
+message NewsMessage{
+   string term = 1;
+}
+
+message NewsResponse{
+  repeated string title = 1;
+}
+
+message ArticleType {
+    int32 id = 1;
+    string title = 2;
+    repeated string tags = 3;
+    string url = 4;
+    string content = 5;
+
+}
+message ArticleMessage{
+    string text = 1;
+}
+
+message ArticleResponse{
+  repeated ArticleType arts = 1;
+}
+service SearchService{
+    rpc SearchNews(ArticleMessage) returns (ArticleResponse) {}
+    rpc NewsQuery(NewsMessage) returns (NewsResponse) {}
+    rpc StarQuery(StarMessage) returns (StarResponse) {}
+}
+
+

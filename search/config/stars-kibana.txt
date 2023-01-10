@@ -1,0 +1,75 @@
+// 自定义 star 的analyzer
+PUT stars
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "star_name_analyzer": {
+          "char_filter": ["html_strip"],
+          "tokenizer": "keyword",
+          "filter": "star_name_filter"
+        }
+      },
+      "filter": {
+        "star_name_filter": {
+          "type": "pinyin",
+          "keep_full_pinyin": true,
+          "keep_joined_full_pinyin": true,
+          "keep_original": true
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "completion",
+        "analyzer": "star_name_analyzer",
+        "search_analyzer": "keyword"
+      }
+    }
+  }
+}
+
+// 批量写入数据
+POST stars/_bulk
+{"index": {}}
+{"name": "张学友"}
+{"index": {}}
+{"name": "刘德华"}
+{"index": {}}
+{"name": "柳岩"}
+{"index": {}}
+{"name": "李易峰"}
+{"index": {}}
+{"name": "黄晓明"}
+{"index": {}}
+{"name": "刘青云"}
+{"index": {}}
+{"name": "易中天"}
+{"index": {}}
+{"name": "李小璐"}
+{"index": {}}
+{"name": "黄家驹"}
+{"index": {}}
+{"name": "李思思"}
+{"index": {}}
+{"name": "庄媛媛"}
+{"index": {}}
+{"name": "柳宗元"}
+
+// 自动补全查询
+GET stars/_search
+{
+  "_source": false,
+  "suggest": {
+    "star_name_suggest": {
+      "prefix": "zh",
+      "completion": {
+        "field": "name",
+        "size": 10,
+        "skip_duplicates": true
+      }
+    }
+  }
+}

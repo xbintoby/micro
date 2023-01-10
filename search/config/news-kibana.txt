@@ -1,0 +1,84 @@
+// 定义分词器以及属性类型
+PUT news
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "news_tags_analyzer": {
+          "char_filter": ["html_strip"],
+          "tokenizer": "keyword",
+          "filter": "star_tags_filter"
+        }
+      },
+      "filter": {
+        "star_tags_filter": {
+          "type": "pinyin",
+          "keep_full_pinyin": true,
+          "keep_joined_full_pinyin": true,
+          "keep_original": true
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "long"
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "ik_max_word",
+        "search_analyzer": "ik_smart"
+      },
+      "url": {
+        "type": "keyword"
+      },
+      "tags": {
+        "type": "completion",
+        "analyzer": "news_tags_analyzer",
+        "search_analyzer": "keyword"
+      }
+    }
+  }
+}
+
+// 自动补全
+GET news/_search
+{
+  "_source": false,
+  "suggest": {
+    "news_tags_suggest": {
+      "prefix": "zh",
+      "completion": {
+        "field": "tags",
+        "size": 10,
+        "skip_duplicates": true
+      }
+    }
+  }
+}
+
+// 搜索
+GET news/_search
+{
+  "_source": ["url", "title", "content"],
+  "query": {
+    "multi_match": {
+      "query": "中国",
+      "fields": ["title", "content"]
+    }
+  },
+  "highlight": {
+    "pre_tags": "<span class='highLight'>",
+    "post_tags": "</span>",
+    "fields": {
+      "title": {},
+      "content": {}
+    }
+  }
+}

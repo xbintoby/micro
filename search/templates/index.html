@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery-ui.min.css" />
+    <script src="../static/js/jquery-2.1.1.min.js"></script>
+    <script src="../static/js/jquery-ui.min.js"></script>
+</head>
+<body>
+    <!-- jquery-ui下载地址: https://jqueryui.com/download/all/
+         autocomplete文档: https://www.runoob.com/jqueryui/api-autocomplete.html
+     -->
+    <input id="auto-complete">
+</body>
+<script>
+    $('#auto-complete').autocomplete({
+        source: 'star', // 请求的路径
+        delay: 100,   // 输入后请求的延迟
+        minLength: 1  // 输入框中内容最少为多个字符，向服务器端发送请求
+    })
+</script>
+</html>

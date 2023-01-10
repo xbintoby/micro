@@ -1,0 +1,39 @@
+info:
+  contact: {}
+paths:
+  /user/info:
+    get:
+      consumes:
+      - application/json
+      description: getuserinfo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+  /user/login:
+    get:
+      consumes:
+      - application/json
+      description: login
+      parameters:
+      - description: 用户名
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: 密码
+        in: path
+        name: password
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+swagger: "2.0"
