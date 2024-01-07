@@ -12,3 +12,8 @@ docker run -d \
   --advertise-client-urls http://0.0.0.0:2379 \
   --listen-client-urls http://0.0.0.0:2379 \
   --initial-cluster-state new
+
+
+sudo sysctl -w vm.max_map_count=262144
+
+docker run -it --name search -v /c/Users/docker_config/search:/go/src/config/   xbinwar3/search:v1
