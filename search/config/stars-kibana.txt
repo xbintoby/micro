@@ -13,7 +13,7 @@ PUT stars
       "filter": {
         "star_name_filter": {
           "type": "pinyin",
-          "keep_full_pinyin": true,
+          "keep_full_pinyin": false,
           "keep_joined_full_pinyin": true,
           "keep_original": true
         }
